@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+mainClassName = 'in.thewhatsupguy.codeplay.CodePlay'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'codeplay'
+    version =  '0.1.0'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile "joda-time:joda-time:2.2"
+}
+
+run {
+    standardInput = System.in
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
