@@ -2,30 +2,30 @@
 ###############################################################################
 #  Steps to Setup Vagrant                                                     #
 #   Install Virtualbox from virtualbox.org                                    #
-#	Install Vagrant from vagrantup.com                                    #
-#	Create folder named - codeplay                                        #
-#	Run Commands inside folder codeplay                                   #
-#		vagrant init ubuntu/trusty64                                  #
-#		vagrant up                                                    #
-#		vagrant ssh                                                   #
-#	Run this script inside the Virtual Machine Now                        #
-#       sudo time -p ./vagrant_codeplay.sh                                    #
+#	Install Vagrant from vagrantup.com                                        #
+#	Create folder named - codeplay                                            #
+#	Run Commands inside folder codeplay                                       #
+#		vagrant init ubuntu/trusty64                                          #
+#		vagrant up                                                            #
+#		vagrant ssh                                                           #
+#	Run this script inside the Virtual Machine Now                            #
+#       sudo time -p ./vagrant_codeplay-java.sh                               #
 ###############################################################################
 
 HOST="codeplay.thewhatsupguy.in"
 TIMEZONE="Asia/Kolkata"
 
 user=$(whoami)
-if [[ "$user" != "root" ]]; then
+    if [[ "$user" != "root" ]]; then
     echo "please run the script as root"
     exit 1
-fi
+    fi
 
 usage()
 {
-cat << EOF
-usage: $0
-EOF
+    cat << EOF
+        usage: $0
+        EOF
 }
 
 #Timezone
@@ -37,6 +37,9 @@ sudo add-apt-repository ppa:webupd8team/java -y
 
 #update
 sudo apt-get update
+
+#Git
+sudo apt-get install -y git
 
 #Screen configuration
 su vagrant <<'EOF'
@@ -57,23 +60,22 @@ sudo apt-get install -y astyle
 #Vim Settings
 
 su vagrant <<'EOF'
+mkdir -p /home/vagrant/.vim/bundle
 git clone https://github.com/VundleVim/Vundle.vim.git /home/vagrant/.vim/bundle/Vundle.vim
 echo ""                                 >  /home/vagrant/.vimrc
-echo "#Vundle Begin"                    >> /home/vagrnat/.vimrc
+echo "\"Vundle Begin"                   >> /home/vagrant/.vimrc
 echo "set nocompatible"				    >> /home/vagrant/.vimrc
 echo "filetype off"				        >> /home/vagrant/.vimrc
 echo "set rtp+=~/.vim/bundle/Vundle.vim">> /home/vagrant/.vimrc
 echo "call vundle#begin()"			    >> /home/vagrant/.vimrc
 echo "Plugin 'VundleVim/Vundle.vim'"    >> /home/vagrant/.vimrc
 echo "Plugin 'Chiel92/vim-autoformat'"  >> /home/vagrant/.vimrc
-echo "#Vundle End"                      >> /home/vagrant/.vimrc	
-echo "filetype plugin indent on"	    >> /home/vagrant/.vimrc
-echo "set nocompatible"                 >> /home/vagrant/.vimrc
-echo "filetype plugin indent on"	    >> /home/vagrant/.vimrc
-echo "set tabstop=4"				    >> /home/vagrant/.vimrc
-echo "set shiftwidth=4"				    >> /home/vagrant/.vimrc
-echo "set expandtab"				    >> /home/vagrant/.vimrc
+echo "\"Vundle End"                     >> /home/vagrant/.vimrc	
+echo "set tabstop=4"                    >> /home/vagrant/.vimrc
+echo "set shiftwidth=4"                 >> /home/vagrant/.vimrc
+echo "set expandtab"                    >> /home/vagrant/.vimrc
 echo ""				                    >> /home/vagrant/.vimrc
+vim +PluginInstall +qall
 EOF
 
 #Misc
@@ -82,12 +84,6 @@ sudo apt-get install -y dpkg-dev
 #Set Hostname
 echo "$HOST" > /etc/hostname
 echo "127.0.0.1 $HOST" >> /etc/hosts
-
-#Git
-sudo apt-get install -y git
-
-#Gradle
-sudo apt-get install -y gradle
 
 #Get Codebase
 su vagrant <<'EOF' 
@@ -104,15 +100,15 @@ sudo apt-get install -y oracle-java8-set-default
 
 #Vagrant Settings
 su vagrant <<'EOF'
-	echo "# -*- mode: ruby -*-"                                             >  /vagrant/Vagrantfile
-	echo "# vi: set ft=ruby :" 						                        >> /vagrant/Vagrantfile
-	echo "Vagrant.configure(2) do |config|"  				                >> /vagrant/Vagrantfile
-	echo "  config.vm.box = \"ubuntu/trusty64\""  				            >> /vagrant/Vagrantfile
-	echo "  config.vm.network \"private_network\", ip: \"10.10.10.13\""  	>> /vagrant/Vagrantfile
-    echo "  config.vm.provider \"virtualbox\" do |vb|"                      >> /vagrant/Vagrantfile
-    echo "      vb.memory = \"1024\""                                       >> /vagrant/Vagrantfile
-    echo "  end"                                                            >> /vagrant/Vagrantfile
-	echo "end" 								                                >> /vagrant/Vagrantfile
+echo "# -*- mode: ruby -*-"                                             >  /vagrant/Vagrantfile
+echo "# vi: set ft=ruby :" 						                        >> /vagrant/Vagrantfile
+echo "Vagrant.configure(2) do |config|"  				                >> /vagrant/Vagrantfile
+echo "  config.vm.box = \"ubuntu/trusty64\""  				            >> /vagrant/Vagrantfile
+echo "  config.vm.network \"private_network\", ip: \"10.10.10.13\""  	>> /vagrant/Vagrantfile
+echo "  config.vm.provider \"virtualbox\" do |vb|"                      >> /vagrant/Vagrantfile
+echo "      vb.memory = \"1024\""                                       >> /vagrant/Vagrantfile
+echo "  end"                                                            >> /vagrant/Vagrantfile
+echo "end" 								                                >> /vagrant/Vagrantfile
 EOF
 
 sudo apt-get -y install python-pip python-dev
