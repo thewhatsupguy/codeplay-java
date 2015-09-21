@@ -74,6 +74,7 @@ echo "\"Vundle End"                     >> /home/vagrant/.vimrc
 echo "set tabstop=4"                    >> /home/vagrant/.vimrc
 echo "set shiftwidth=4"                 >> /home/vagrant/.vimrc
 echo "set expandtab"                    >> /home/vagrant/.vimrc
+echo "syntax on"	                    >> /home/vagrant/.vimrc
 echo ""				                    >> /home/vagrant/.vimrc
 vim +PluginInstall +qall
 EOF
