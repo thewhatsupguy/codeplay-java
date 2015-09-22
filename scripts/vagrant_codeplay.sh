@@ -25,7 +25,7 @@ usage()
 {
     cat << EOF
         usage: $0
-        EOF
+EOF
 }
 
 #Timezone
@@ -41,6 +41,16 @@ sudo apt-get update
 #Git
 sudo apt-get install -y git
 
+#Git Configuration
+cmd="
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=36000'
+git config --global diff.tool vimdiff
+git config --global merge.tool vimdiff
+git config --global alias.d difftool
+git config --global difftool.prompt false
+"
+su vagrant <<< "$cmd"
 #Screen configuration
 su vagrant <<'EOF'
 echo "startup_message off"		                    >  /home/vagrant/.screenrc
@@ -89,8 +99,6 @@ echo "127.0.0.1 $HOST" >> /etc/hosts
 #Get Codebase
 su vagrant <<'EOF' 
 git clone https://github.com/thewhatsupguy/codeplay-java.git  /home/vagrant/codeplay-java
-git config --global credential.helper cache
-git config --global credential.helper 'cache --timeout=36000'
 EOF
 
 #Java
